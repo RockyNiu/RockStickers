@@ -5,8 +5,8 @@ package com.rockyniu.stickers.model;
  */
 public class Link extends BaseData {
     private String userId = "";
-    private String link;
-    private String text;
+    private String address;
+    private String title;
     private int linkType;
 
     public String getUserId() {
@@ -17,20 +17,20 @@ public class Link extends BaseData {
         this.userId = userId;
     }
 
-    public String getLink() {
-        return link;
+    public String getAddress() {
+        return address;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getText() {
-        return text;
+    public String getTitle() {
+        return title;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public int getLinkType() {
@@ -42,6 +42,6 @@ public class Link extends BaseData {
     }
 
     public String toSmsMessage() {
-        return getText() + "\n" + getLink();
+        return getTitle() + "\n" + getAddress();
     }
 }

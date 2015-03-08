@@ -31,14 +31,14 @@
                     android:id="@+id/row_text"
                     android:layout_width="@dimen/link_item_width"
                     android:layout_height="wrap_content"
-                    android:text="@string/text" />
+                    android:title="@string/title" />
 
                 <TextView
                     android:id="@+id/row_link"
                     android:layout_width="@dimen/link_item_width"
                     android:layout_height="wrap_content"
                     android:autoLink="web"
-                    android:text="@string/link" />
+                    android:title="@string/address" />
 
             </LinearLayout>
         </LinearLayout>

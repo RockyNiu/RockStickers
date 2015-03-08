@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class EditLinkActivity extends BaseActivity {
 
-    private final static int UPDATE_DONE = 0;
+    private final static int UPDATE_DONE = -1000;
 //    private final int MAX_LENGTH = 140; // max length of name
 
     private LinkDataSource linkDataSource;
@@ -42,7 +42,7 @@ public class EditLinkActivity extends BaseActivity {
 
         linkDataSource = new LinkDataSource(this);
         titleEditText = (EditText) findViewById(R.id.edit_title_edittext);
-        linkEditText = (EditText) findViewById(R.id.edit_link_edittext);
+        linkEditText = (EditText) findViewById(R.id.edit_address_edittext);
 
         titleEditText.requestFocus();
 
@@ -58,8 +58,8 @@ public class EditLinkActivity extends BaseActivity {
                 this.setResult(RESULT_CANCELED);
                 return;
             }
-            titleEditText.setText(link.getText());
-            linkEditText.setText(link.getLink());
+            titleEditText.setText(link.getTitle());
+            linkEditText.setText(link.getAddress());
         }
     }
 
@@ -122,7 +122,7 @@ public class EditLinkActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         if (saveItem()) {
-            this.setResult(RESULT_OK);
+            this.setResult(RESULT_CANCELED);
             this.finish();
             super.onBackPressed();
         }
@@ -136,29 +136,31 @@ public class EditLinkActivity extends BaseActivity {
             return false;
         }
 
-        String link = linkEditText.getText().toString().trim()
+        String address = linkEditText.getText().toString().trim()
                 .replaceAll("\\s+", " ");
-        if (link.isEmpty()) {
+        if (address.isEmpty()) {
             DialogHelper.showNeedClickDialog(EditLinkActivity.this, getResources().getString(R.string.address_is_empty), getResources().getString(R.string.please_fill_title));
             return false;
         }
         int updateResult;
         if (linkId.equals("")) {
             // Add item
-            updateResult = addItem(title, link);
+            updateResult = addItem(title, address);
         } else {
             // Update item
-            updateResult = updateItem(title, link);
+            updateResult = updateItem(title, address);
         }
         if (updateResult == UPDATE_DONE) {
             ToastHelper.showToastInternal(EditLinkActivity.this, getResources().getString(R.string.link_updated));
+        } else if (updateResult == RESULT_CANCELED) {
+            ToastHelper.showToastInternal(EditLinkActivity.this, getResources().getString(R.string.link_updated_cancelled));
         } else {
             //TODO
         }
         return true;
     }
 
-    private int addItem(String title, String link) {
+    private int addItem(String title, String address) {
         // create item and save into database
         linkId = UUID.randomUUID().toString();
         Link newLink = new Link();
@@ -170,8 +172,8 @@ public class EditLinkActivity extends BaseActivity {
 //            ToastHelper.showToastInternal(this,
 //                    "Name is truncated to 140 characters.");
 //        }
-        newLink.setText(title);
-        newLink.setLink(link);
+        newLink.setTitle(title);
+        newLink.setAddress(address);
 
         newLink.setModifiedTime(Calendar.getInstance().getTimeInMillis());
         linkDataSource.insertItemWithId(newLink);
@@ -179,7 +181,7 @@ public class EditLinkActivity extends BaseActivity {
         return UPDATE_DONE;
     }
 
-    private int updateItem(String title, String link) {
+    private int updateItem(String title, String address) {
         Link newLink = new Link();
         newLink.setId(linkId);
         newLink.setUserId(userId);
@@ -189,8 +191,8 @@ public class EditLinkActivity extends BaseActivity {
 //            ToastHelper.showToastInternal(this,
 //                    "Name is truncated to 140 characters.");
 //        }
-        newLink.setText(title);
-        newLink.setLink(link);
+        newLink.setTitle(title);
+        newLink.setAddress(address);
 
         newLink.setModifiedTime(Calendar.getInstance().getTimeInMillis());
         linkDataSource.updateItem(newLink);

@@ -21,8 +21,8 @@ public class BaseSQLiteHelper extends SQLiteOpenHelper {
 
     public static final String COLUMN_ID = "uuid";
     public static final String COLUMN_USER_ID = "userId";
-    public static final String COLUMN_LINK = "link";
-    public static final String COLUMN_TEXT = "text";
+    public static final String COLUMN_ADDRESS = "address";
+    public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_LINKTYPE = "linkType";
     public static final String COLUMN_MODIFIED_TIME = "modifiedTime"; // last modified time
     public static final String COLUMN_DELETED = "deleted";
@@ -34,8 +34,8 @@ public class BaseSQLiteHelper extends SQLiteOpenHelper {
             + TABLE_LINK + "("
             + COLUMN_ID + " text primary key, "
             + COLUMN_USER_ID + " text default '', "
-            + COLUMN_LINK + " text default '', "
-            + COLUMN_TEXT + " text default '', "
+            + COLUMN_ADDRESS + " text default '', "
+            + COLUMN_TITLE + " text default '', "
             + COLUMN_LINKTYPE + " integer default 0, "
             + COLUMN_MODIFIED_TIME + " integer default 0, "
             + COLUMN_DELETED + " integer default 0, "

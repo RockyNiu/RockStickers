@@ -7,19 +7,20 @@
     <string name="app_name">Stickers</string>
     <string name="cancel">Cancel</string>
     <string name="edit_link">Edit Link</string>
-    <string name="email_title">Share link with you</string>
+    <string name="email_title">Share address with you</string>
     <string name="error">Error</string>
     <string name="error_format">[Error] %s</string>
-    <string name="link">Link</string>
+    <string name="address">Link</string>
     <string name="link_updated">Link is updated</string>
+    <string name="link_updated_cancelled">Update is Cancelled</string>
     <string name="news">News</string>
     <string name="please_fill_title">Please fill title.</string>
     <string name="save">Save</string>
     <string name="send_email">Send Email</string>
     <string name="send_smsMessage">Send Message</string>
-    <string name="text">Title</string>
+    <string name="title">Title</string>
     <string name="title_is_empty">Title is empty</string>
 
     <string name="cctvNews">CCTV NEWS</string>
-    <string name="cctvNews_link">http://cctv.cntv.cn/lm/xinwenlianbo</string>
+    <string name="cctvNews_address">http://cctv.cntv.cn/lm/xinwenlianbo</string>
 </resources>

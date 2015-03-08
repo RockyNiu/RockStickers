@@ -52,8 +52,8 @@ public class LinkListAdapter extends ArrayAdapter<Link> {
 
         Link currentItem = list.get(position);
 
-        String text = currentItem.getText();
-        String link = currentItem.getLink();
+        String text = currentItem.getTitle();
+        String link = currentItem.getAddress();
 
         textTextView.setText(text);
         linkTextView.setText(link);

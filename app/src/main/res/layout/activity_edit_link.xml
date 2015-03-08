@@ -26,14 +26,14 @@
                 android:id="@+id/edit_title_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/text" />
+                android:title="@string/title" />
 
             <EditText
                 android:id="@+id/edit_title_edittext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="@string/text"
+                android:hint="@string/title"
                 android:inputType="textAutoComplete" />
         </LinearLayout>
 
@@ -42,7 +42,7 @@
             android:layout_height="@dimen/link_listView_space_interval" />
 
         <LinearLayout
-            android:id="@+id/edit_group_link"
+            android:id="@+id/edit_group_address"
             android:layout_width="@dimen/edit_inputItem_layout_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -50,17 +50,17 @@
             android:theme="@style/EditInputItemTheme">
 
             <TextView
-                android:id="@+id/edit_link_title"
+                android:id="@+id/edit_address_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/link" />
+                android:title="@string/address" />
 
             <EditText
-                android:id="@+id/edit_link_edittext"
+                android:id="@+id/edit_address_edittext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/link"
+                android:ems="20"
+                android:hint="@string/address"
                 android:inputType="textUri" />
         </LinearLayout>
 
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onCancelClick"
-                android:text="@string/cancel" />
+                android:title="@string/cancel" />
 
             <Space
                 android:layout_width="@dimen/edit_button_space"
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="onSaveClick"
-                android:text="@string/save" />
+                android:title="@string/save" />
         </LinearLayout>
     </LinearLayout>
 

@@ -95,8 +95,8 @@ public class NewsFragment extends BaseFragment implements AbsListView.OnItemClic
         if (links.isEmpty()) {
             Link link = new Link();
             link.setId(UUID.randomUUID().toString());
-            link.setText(getResources().getString(R.string.cctvNews));
-            link.setLink(getResources().getString(R.string.cctvNews_link));
+            link.setTitle(getResources().getString(R.string.cctvNews));
+            link.setAddress(getResources().getString(R.string.cctvNews_address));
             link.setLinkType(LINK_TYPE);
             link.setModifiedTime(Calendar.getInstance()
                     .getTimeInMillis());

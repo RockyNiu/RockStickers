@@ -15,8 +15,8 @@ public class LinkDataSource extends BaseDataSource<Link> {
     private static final String TABLE_NAME = BaseSQLiteHelper.TABLE_LINK;
     private static final String[] ALL_COLUMNS = {BaseSQLiteHelper.COLUMN_ID,
             BaseSQLiteHelper.COLUMN_USER_ID,
-            BaseSQLiteHelper.COLUMN_LINK,
-            BaseSQLiteHelper.COLUMN_TEXT,
+            BaseSQLiteHelper.COLUMN_ADDRESS,
+            BaseSQLiteHelper.COLUMN_TITLE,
             BaseSQLiteHelper.COLUMN_LINKTYPE,
             BaseSQLiteHelper.COLUMN_MODIFIED_TIME,
             BaseSQLiteHelper.COLUMN_DELETED};
@@ -34,8 +34,8 @@ public class LinkDataSource extends BaseDataSource<Link> {
         ContentValues values = new ContentValues();
 //        values.put(com.rockyniu.mpgcalculator.database.BaseSQLiteHelper.COLUMN_ID, link.getId());
         values.put(BaseSQLiteHelper.COLUMN_USER_ID, link.getUserId());
-        values.put(BaseSQLiteHelper.COLUMN_LINK, link.getLink());
-        values.put(BaseSQLiteHelper.COLUMN_TEXT, link.getText());
+        values.put(BaseSQLiteHelper.COLUMN_ADDRESS, link.getAddress());
+        values.put(BaseSQLiteHelper.COLUMN_TITLE, link.getTitle());
         values.put(BaseSQLiteHelper.COLUMN_LINKTYPE, link.getLinkType());
         values.put(BaseSQLiteHelper.COLUMN_MODIFIED_TIME, link.getModifiedTime());
         values.put(BaseSQLiteHelper.COLUMN_DELETED, link.isDeleted());
@@ -49,10 +49,10 @@ public class LinkDataSource extends BaseDataSource<Link> {
                 .getColumnIndex(BaseSQLiteHelper.COLUMN_ID)));
         link.setUserId(cursor.getString(cursor
                 .getColumnIndex(BaseSQLiteHelper.COLUMN_USER_ID)));
-        link.setLink(cursor.getString(cursor
-                .getColumnIndex(BaseSQLiteHelper.COLUMN_LINK)));
-        link.setText(cursor.getString(cursor
-                .getColumnIndex(BaseSQLiteHelper.COLUMN_TEXT)));
+        link.setAddress(cursor.getString(cursor
+                .getColumnIndex(BaseSQLiteHelper.COLUMN_ADDRESS)));
+        link.setTitle(cursor.getString(cursor
+                .getColumnIndex(BaseSQLiteHelper.COLUMN_TITLE)));
         link.setLinkType(cursor.getInt(cursor
                 .getColumnIndex(BaseSQLiteHelper.COLUMN_LINKTYPE)));
         link.setModifiedTime(cursor.getLong(cursor
