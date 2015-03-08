@@ -18,6 +18,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.rockyniu.stickers.activity.EditLinkActivity"
+            android:label="@string/edit_link" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.rockyniu.stickers.activity.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

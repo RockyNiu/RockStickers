@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentLeft="true"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/link_listView_space_interval" />
+
+        <LinearLayout
+            android:id="@+id/edit_group_title"
+            android:layout_width="@dimen/edit_inputItem_layout_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:theme="@style/EditInputItemTheme">
+
+            <TextView
+                android:id="@+id/edit_title_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text" />
+
+            <EditText
+                android:id="@+id/edit_title_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/text"
+                android:inputType="textAutoComplete" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/link_listView_space_interval" />
+
+        <LinearLayout
+            android:id="@+id/edit_group_link"
+            android:layout_width="@dimen/edit_inputItem_layout_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:theme="@style/EditInputItemTheme">
+
+            <TextView
+                android:id="@+id/edit_link_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/link" />
+
+            <EditText
+                android:id="@+id/edit_link_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/link"
+                android:inputType="textUri" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/link_listView_space_interval" />
+
+        <LinearLayout
+            android:id="@+id/edit_group_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <Button
+                android:id="@+id/edit_cancel_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onCancelClick"
+                android:text="@string/cancel" />
+
+            <Space
+                android:layout_width="@dimen/edit_button_space"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/edit_save_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onSaveClick"
+                android:text="@string/save" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

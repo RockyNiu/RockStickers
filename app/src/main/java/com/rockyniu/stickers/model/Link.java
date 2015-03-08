@@ -40,4 +40,8 @@ public class Link extends BaseData {
     public void setLinkType(int linkType) {
         this.linkType = linkType;
     }
+
+    public String toSmsMessage() {
+        return getText() + "\n" + getLink();
+    }
 }

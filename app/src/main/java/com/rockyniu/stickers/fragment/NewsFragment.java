@@ -3,8 +3,13 @@ package com.rockyniu.stickers.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -13,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.rockyniu.stickers.R;
+import com.rockyniu.stickers.activity.EditLinkActivity;
 import com.rockyniu.stickers.adapter.LinkListAdapter;
 import com.rockyniu.stickers.database.LinkDataSource;
 import com.rockyniu.stickers.listener.OnFragmentInteractionListener;
@@ -35,13 +41,13 @@ import java.util.UUID;
  */
 public class NewsFragment extends BaseFragment implements AbsListView.OnItemClickListener {
 
+    private static final int REQUEST_EDIT_LINK = 1001;
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String USER_ID = "userId";
+    private static final int LINK_TYPE = 0;
 
     // TODO: Rename and change types of parameters
-    private String userId;
-    private static final int LINK_TYPE = 0;
+    private static String userId;
 
     private LinkDataSource linkDataSource;
     private List<Link> links;
@@ -60,10 +66,10 @@ public class NewsFragment extends BaseFragment implements AbsListView.OnItemClic
     private LinkListAdapter mAdapter;
 
     // TODO: Rename and change types of parameters
-    public static NewsFragment newInstance(String param1) {
+    public static NewsFragment newInstance(String userId) {
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
-        args.putString(USER_ID, param1);
+        args.putString(USER_ID, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -107,12 +113,27 @@ public class NewsFragment extends BaseFragment implements AbsListView.OnItemClic
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_record, container, false);
 
+        setHasOptionsMenu(true); // must for additional menu of fragment
+
         // Set the adapter
         mListView = (AbsListView) rootView.findViewById(R.id.list_records);
         mListView.setAdapter(mAdapter);
 
 //        // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
+
+        // long cilck action
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view,
+                                           int position, long id) {
+                Link currentLink = mAdapter
+                        .getItem(position);
+                String itemId = currentLink.getId();
+                editItem(itemId);
+                return true;
+            }
+        });
 
         // swipe to delete tasks
         SwipeDismissListViewTouchListener touchListener = new SwipeDismissListViewTouchListener(
@@ -176,6 +197,34 @@ public class NewsFragment extends BaseFragment implements AbsListView.OnItemClic
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add_link:
+                editItem("");
+                return true;
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(getActivity());
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == NewsFragment.REQUEST_EDIT_LINK
+                && resultCode == Activity.RESULT_OK) {
+            refreshView();
+        }
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
@@ -203,6 +252,17 @@ public class NewsFragment extends BaseFragment implements AbsListView.OnItemClic
         if (emptyView instanceof TextView) {
             ((TextView) emptyView).setText(emptyText);
         }
+    }
+
+    // add or edit Item
+    private void editItem(String linkId) {
+        Intent myIntent = new Intent(this.getActivity(), EditLinkActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("com.rockyniu.stickers.userId", userId);
+        bundle.putString("com.rockyniu.stickers.linkId", linkId);
+        bundle.putInt("com.rockyniu.stickers.linkType", LINK_TYPE);
+        myIntent.putExtras(bundle);
+        startActivityForResult(myIntent, REQUEST_EDIT_LINK);
     }
 
     private void refreshView() {
