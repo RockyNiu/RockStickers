@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">牛人便签</string>
+    <string name="text">标题</string>
+    <string name="link">链接</string>
+    <string name="news">新闻</string>
+
+    <string name="error">错误</string>
+    <string name="error_format">[错误] %s</string>
+
+    <string name="action_settings">设置</string>
+
+
+    <string name="cctvNews">CCTV 新闻联播</string>
+    <string name="cctvNews_link">http://cctv.cntv.cn/lm/xinwenlianbo</string>
+</resources>

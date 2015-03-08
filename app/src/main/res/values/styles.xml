@@ -1,0 +1,11 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat"></style>
+
+    <style name="LinkTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/link_textView_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_margin">@dimen/link_listView_space_interval</item>
+    </style>
+</resources>
