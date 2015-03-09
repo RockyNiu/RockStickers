@@ -28,17 +28,10 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/row_text"
+                    android:id="@+id/row_title"
                     android:layout_width="@dimen/link_item_width"
                     android:layout_height="wrap_content"
                     android:title="@string/title" />
-
-                <TextView
-                    android:id="@+id/row_link"
-                    android:layout_width="@dimen/link_item_width"
-                    android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:title="@string/address" />
 
             </LinearLayout>
         </LinearLayout>

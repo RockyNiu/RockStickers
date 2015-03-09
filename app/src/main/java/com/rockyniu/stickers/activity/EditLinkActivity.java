@@ -121,11 +121,10 @@ public class EditLinkActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (saveItem()) {
-            this.setResult(RESULT_CANCELED);
-            this.finish();
-            super.onBackPressed();
-        }
+        ToastHelper.showToastInternal(EditLinkActivity.this, "Cancel Editing.");
+        this.setResult(RESULT_CANCELED);
+        this.finish();
+        super.onBackPressed();
     }
 
     private boolean saveItem() {

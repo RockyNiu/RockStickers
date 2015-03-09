@@ -46,17 +46,13 @@ public class LinkListAdapter extends ArrayAdapter<Link> {
         }
 
         ImageView imagePriorityBar = (ImageView) view.findViewById(R.id.priority_bar);
-        TextView textTextView = (TextView) view.findViewById(R.id.row_text);
-        TextView linkTextView = (TextView) view.findViewById(R.id.row_link);
-
+        TextView titleTextView = (TextView) view.findViewById(R.id.row_title);
 
         Link currentItem = list.get(position);
 
-        String text = currentItem.getTitle();
-        String link = currentItem.getAddress();
+        String title = currentItem.getTitle();
 
-        textTextView.setText(text);
-        linkTextView.setText(link);
+        titleTextView.setText(title);
         return view;
     }
 }

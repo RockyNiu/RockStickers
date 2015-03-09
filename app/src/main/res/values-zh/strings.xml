@@ -2,6 +2,8 @@
 <resources>
 
     <string name="action_settings">设置</string>
+    <string name="address">网址</string>
+    <string name="address_default">http://www.baidu.com</string>
     <string name="address_is_empty">网址为空</string>
     <string name="add_link">添加链接</string>
     <string name="app_name">牛人便签</string>
@@ -10,7 +12,6 @@
     <string name="email_title">与您共享链接</string>
     <string name="error">错误</string>
     <string name="error_format">[错误] %s</string>
-    <string name="address">链接</string>
     <string name="link_updated">链接已被更新</string>
     <string name="link_updated_cancelled">链接更新被取消</string>
     <string name="news">新闻</string>
@@ -19,6 +20,7 @@
     <string name="send_email">发送邮件</string>
     <string name="send_smsMessage">发送消息</string>
     <string name="title">标题</string>
+    <string name="title_default">百度</string>
     <string name="title_is_empty">标题为空</string>
 
     <string name="cctvNews">CCTV 新闻联播</string>

@@ -2,6 +2,8 @@ package com.rockyniu.stickers.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -12,6 +14,7 @@ import com.rockyniu.stickers.R;
 import com.rockyniu.stickers.fragment.NewsFragment;
 import com.rockyniu.stickers.listener.MainTabListener;
 import com.rockyniu.stickers.listener.OnFragmentInteractionListener;
+import com.rockyniu.stickers.model.Link;
 
 
 public class MainActivity extends BaseActivity implements OnFragmentInteractionListener {
@@ -79,8 +82,8 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
     }
 
     @Override
-    public void onFragmentInteraction(String id) {
-
+    public void onFragmentClick(Link link) {
+        goToUrl(link.getAddress());
     }
 
     @Override
@@ -95,5 +98,11 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
                         MainActivity.super.onBackPressed();
                     }
                 }).create().show();
+    }
+
+    private void goToUrl(String url) {
+        Uri uriUrl = Uri.parse(url);
+        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
+        startActivity(launchBrowser);
     }
 }

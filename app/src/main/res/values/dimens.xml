@@ -9,8 +9,9 @@
     <dimen name="link_listView_space_interval">5dp</dimen>
     <dimen name="link_priority_bar_width">10dp</dimen>
 
-    <dimen name="edit_button_space">30dp</dimen>
-    <dimen name="edit_inputItem_layout_topMargin">10dp</dimen>
+    <dimen name="edit_button_space">40dp</dimen>
+    <dimen name="edit_button_width">130dp</dimen>
+    <dimen name="edit_inputItem_layout_topMargin">5dp</dimen>
     <dimen name="edit_inputItem_layout_width">300dp</dimen>
     <dimen name="edit_inputItem_textView_size">32sp</dimen>
     <dimen name="edit_inputItem_textView_bigSize">64sp</dimen>

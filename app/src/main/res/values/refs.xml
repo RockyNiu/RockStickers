@@ -7,6 +7,6 @@
     For more on layout aliases, see:
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
     -->
-    <item name="fragment_record" type="layout">@layout/fragment_record_list</item>
+    <item name="fragment_link" type="layout">@layout/fragment_link_list</item>
 
 </resources>

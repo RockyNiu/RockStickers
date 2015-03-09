@@ -9,10 +9,11 @@
         <item name="android:layout_margin">@dimen/link_listView_space_interval</item>
     </style>
 
-    <style name="EditInputItemTheme">
+    <style name="EditLinkTheme">
         <item name="android:layout_marginTop">@dimen/edit_inputItem_layout_topMargin</item>
         <item name="android:textViewStyle">@style/EditInputTextViewStyle</item>
         <item name="android:editTextStyle">@style/EditInputEditTextStyle</item>
+        <item name="android:buttonStyle">@style/EditInputButtonStyle</item>
     </style>
 
     <style name="EditInputTextViewStyle" parent="android:Widget.TextView">
@@ -25,4 +26,8 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="EditInputButtonStyle" parent="android:Widget.Button">
+        <item name="android:textSize">@dimen/edit_inputItem_editText_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

@@ -33,8 +33,7 @@ import java.util.UUID;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Large screen devices (such as tablets) are supported by replacing the ListView
- * with a GridView.
+ * //TODO Large screen devices (such as tablets) are supported by replacing the ListView with a GridView.
  * <p/>
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
@@ -42,11 +41,9 @@ import java.util.UUID;
 public class NewsFragment extends BaseFragment implements AbsListView.OnItemClickListener {
 
     private static final int REQUEST_EDIT_LINK = 1001;
-    // TODO: Rename parameter arguments, choose names that match
     private static final String USER_ID = "userId";
     private static final int LINK_TYPE = 0;
 
-    // TODO: Rename and change types of parameters
     private static String userId;
 
     private LinkDataSource linkDataSource;
@@ -60,12 +57,11 @@ public class NewsFragment extends BaseFragment implements AbsListView.OnItemClic
     private AbsListView mListView;
 
     /**
-     * The Adapter which will be used to populate the ListView/GridView with
+     * //TODO The Adapter which will be used to populate the ListView/GridView with
      * Views.
      */
     private LinkListAdapter mAdapter;
 
-    // TODO: Rename and change types of parameters
     public static NewsFragment newInstance(String userId) {
         NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
@@ -111,15 +107,15 @@ public class NewsFragment extends BaseFragment implements AbsListView.OnItemClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_record, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_link, container, false);
 
         setHasOptionsMenu(true); // must for additional menu of fragment
 
         // Set the adapter
-        mListView = (AbsListView) rootView.findViewById(R.id.list_records);
+        mListView = (AbsListView) rootView.findViewById(R.id.list_link);
         mListView.setAdapter(mAdapter);
 
-//        // Set OnItemClickListener so we can be notified on item clicks
+        // click action
         mListView.setOnItemClickListener(this);
 
         // long cilck action
@@ -236,8 +232,8 @@ public class NewsFragment extends BaseFragment implements AbsListView.OnItemClic
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-//            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
-            mListener.onFragmentInteraction(links.get(position).getId());
+//            mListener.onFragmentClick(DummyContent.ITEMS.get(position).id);
+            mListener.onFragmentClick(links.get(position));
         }
     }
 
