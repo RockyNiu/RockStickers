@@ -1,11 +1,13 @@
 package com.rockyniu.stickers.activity;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.rockyniu.stickers.R;
@@ -28,21 +30,54 @@ public class EditLinkActivity extends BaseActivity {
     private String linkId;
     private int linkType;
     private EditText titleEditText;
-    private EditText linkEditText;
+    private EditText addressEditText;
+    private Button saveButton;
+    private Button cancelButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_link);
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        userId = bundle.getString("com.rockyniu.stickers.userId");
-        linkId = bundle.getString("com.rockyniu.stickers.linkId");
-        linkType = bundle.getInt("com.rockyniu.stickers.linkType");
-
         linkDataSource = new LinkDataSource(this);
         titleEditText = (EditText) findViewById(R.id.edit_title_edittext);
-        linkEditText = (EditText) findViewById(R.id.edit_address_edittext);
+        addressEditText = (EditText) findViewById(R.id.edit_address_edittext);
+        saveButton = (Button) findViewById(R.id.edit_save_button);
+        cancelButton = (Button) findViewById(R.id.edit_cancel_button);
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (saveItem()) {
+                    EditLinkActivity.this.setResult(RESULT_OK);
+                    EditLinkActivity.this.finish();
+                }
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastHelper.showToastInternal(EditLinkActivity.this, "Cancel Editing.");
+                EditLinkActivity.this.setResult(RESULT_CANCELED);
+                EditLinkActivity.this.finish();
+            }
+        });
+
+        Intent intent = getIntent();
+
+        String type = intent.getType();
+        if (type != null && type.equals("text/plain")) {
+            ClipData data = intent.getClipData();
+            addressEditText.setText(data.getItemAt(0).getText());
+            userId = ""; //TODO
+            linkId = "";
+            linkType = 0;
+        } else {
+            Bundle bundle = intent.getExtras();
+            userId = bundle.getString("com.rockyniu.stickers.userId");
+            linkId = bundle.getString("com.rockyniu.stickers.linkId");
+            linkType = bundle.getInt("com.rockyniu.stickers.linkType");
+        }
 
         titleEditText.requestFocus();
 
@@ -59,7 +94,7 @@ public class EditLinkActivity extends BaseActivity {
                 return;
             }
             titleEditText.setText(link.getTitle());
-            linkEditText.setText(link.getAddress());
+            addressEditText.setText(link.getAddress());
         }
     }
 
@@ -106,19 +141,6 @@ public class EditLinkActivity extends BaseActivity {
         return super.onOptionsItemSelected(menuItem);
     }
 
-    public void onSaveClick(View view) {
-        if (saveItem()) {
-            this.setResult(RESULT_OK);
-            this.finish();
-        }
-    }
-
-    public void onCancelClick(View view) {
-        ToastHelper.showToastInternal(EditLinkActivity.this, "Cancel Editing.");
-        this.setResult(RESULT_CANCELED);
-        this.finish();
-    }
-
     @Override
     public void onBackPressed() {
         ToastHelper.showToastInternal(EditLinkActivity.this, "Cancel Editing.");
@@ -135,7 +157,7 @@ public class EditLinkActivity extends BaseActivity {
             return false;
         }
 
-        String address = linkEditText.getText().toString().trim()
+        String address = addressEditText.getText().toString().trim()
                 .replaceAll("\\s+", " ");
         if (address.isEmpty()) {
             DialogHelper.showNeedClickDialog(EditLinkActivity.this, getResources().getString(R.string.address_is_empty), getResources().getString(R.string.please_fill_title));

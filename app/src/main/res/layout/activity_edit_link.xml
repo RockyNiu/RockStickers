@@ -70,7 +70,6 @@
                 android:id="@+id/edit_cancel_button"
                 android:layout_width="@dimen/edit_button_width"
                 android:layout_height="wrap_content"
-                android:onClick="onCancelClick"
                 android:text="@string/cancel" />
 
             <Space
@@ -81,7 +80,6 @@
                 android:id="@+id/edit_save_button"
                 android:layout_width="@dimen/edit_button_width"
                 android:layout_height="wrap_content"
-                android:onClick="onSaveClick"
                 android:text="@string/save" />
         </LinearLayout>
     </LinearLayout>

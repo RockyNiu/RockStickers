@@ -3,7 +3,7 @@
     package="com.rockyniu.stickers">
 
     <uses-sdk
-        android:minSdkVersion="15"
+        android:minSdkVersion="16"
         android:targetSdkVersion="21" />
     <uses-permission android:name="android.permission.INTERNET" />
     <application
@@ -20,7 +20,12 @@
         </activity>
         <activity
             android:name="com.rockyniu.stickers.activity.EditLinkActivity"
-            android:label="@string/edit_link" >
+            android:label="@string/edit_link">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.rockyniu.stickers.activity.MainActivity" />
