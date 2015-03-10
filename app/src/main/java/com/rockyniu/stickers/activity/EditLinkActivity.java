@@ -18,6 +18,8 @@ import com.rockyniu.stickers.util.ToastHelper;
 
 import java.util.Calendar;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EditLinkActivity extends BaseActivity {
 
@@ -62,21 +64,42 @@ public class EditLinkActivity extends BaseActivity {
                 EditLinkActivity.this.finish();
             }
         });
+        userId = ""; //TODO
+        linkId = "";
+        linkType = 0;
 
         Intent intent = getIntent();
 
         String type = intent.getType();
-        if (type != null && type.equals("text/plain")) {
+        Bundle bundle = intent.getExtras();
+        if (type != null && type.equals("text/plain") && intent.getClipData() != null) {
             ClipData data = intent.getClipData();
             addressEditText.setText(data.getItemAt(0).getText());
-            userId = ""; //TODO
-            linkId = "";
-            linkType = 0;
-        } else {
-            Bundle bundle = intent.getExtras();
-            userId = bundle.getString("com.rockyniu.stickers.userId");
-            linkId = bundle.getString("com.rockyniu.stickers.linkId");
-            linkType = bundle.getInt("com.rockyniu.stickers.linkType");
+        } else if (bundle != null) {
+            if (bundle.keySet().contains(Intent.EXTRA_TEXT)) { // for HuaWei cell phone
+                String content = bundle.getString(Intent.EXTRA_TEXT);
+                String uri = "";
+                Pattern pattern = Pattern.compile(
+                        "\\b(((ht|f)tp(s?)\\:\\/\\/|~\\/|\\/)|www.)" +
+                                "(\\w+:\\w+@)?(([-\\w]+\\.)+(com|org|net|gov" +
+                                "|mil|biz|info|mobi|name|aero|jobs|museum" +
+                                "|travel|[a-z]{2}))(:[\\d]{1,5})?" +
+                                "(((\\/([-\\w~!$+|.,=]|%[a-f\\d]{2})+)+|\\/)+|\\?|#)?" +
+                                "((\\?([-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?" +
+                                "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)" +
+                                "(&(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?" +
+                                "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)*)*" +
+                                "(#([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)?\\b");
+                Matcher matcher = pattern.matcher(content);
+                if (matcher.find()) {
+                    uri = matcher.group();
+                }
+                addressEditText.setText(uri);
+            } else {
+                userId = bundle.getString("com.rockyniu.stickers.userId");
+                linkId = bundle.getString("com.rockyniu.stickers.linkId");
+                linkType = bundle.getInt("com.rockyniu.stickers.linkType");
+            }
         }
 
         titleEditText.requestFocus();

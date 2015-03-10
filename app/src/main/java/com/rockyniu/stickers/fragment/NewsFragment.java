@@ -210,6 +210,11 @@ public class NewsFragment extends BaseFragment implements AbsListView.OnItemClic
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshView();
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
