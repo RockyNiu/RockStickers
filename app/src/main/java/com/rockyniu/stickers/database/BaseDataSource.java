@@ -22,7 +22,7 @@ public abstract class BaseDataSource<T extends BaseData> {
 
     // Database fields
     public enum DeletedFlag {
-        All(-1),
+        ALL(-1),
         UNDELETED(0),
         DELETED(1);
         private final int flag;
@@ -74,81 +74,121 @@ public abstract class BaseDataSource<T extends BaseData> {
 
     public T getItemById(String id) {
         openWritableDatabase();
-        Cursor cursor = database.query(tableName,
-                allColumns, columnId + " = ? ",
-                new String[]{id}, null, null, null);
+        T newItem = null;
+        Cursor cursor = null;
+        try {
+            cursor = database.query(tableName,
+                    allColumns, columnId + " = ? ",
+                    new String[]{id}, null, null, null);
 
-        cursor.moveToFirst();
-        if (cursor.isAfterLast())
-            return null;
-        T newItem = cursorToItem(cursor);
-
-        closeDatabase();
+            cursor.moveToFirst();
+            if (!cursor.isAfterLast()) {
+                newItem = cursorToItem(cursor);
+            }
+        } catch (SQLException e) {
+            Log.e(TAG, "Fail to retrieve item", e);
+            throw e;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            closeDatabase();
+        }
         return newItem;
     }
 
     // remember to create an id for t:
     // t.setId(UUID.randomUUID().toString());
     public void insertItemWithId(T t) {
-        Log.i(TAG, "enter method");
         if (t == null || t.getId() == null || dataIdExist(t.getId())) {
             throw new IllegalArgumentException();
         }
-        ContentValues values = toValuesWithoutId(t);
-        values.put(columnId, t.getId());
-        openWritableDatabase();
-        database.insert(tableName, null, values);
-        closeDatabase();
+        try {
+            ContentValues values = toValuesWithoutId(t);
+            values.put(columnId, t.getId());
+            openWritableDatabase();
+            database.insert(tableName, null, values);
+        } catch (SQLException e) {
+            Log.e(TAG, "Fail to insert item", e);
+            throw e;
+        } finally {
+            closeDatabase();
+        }
     }
 
     public int updateItem(T t) {
-        Log.i(TAG, "enter method");
         String id = t.getId();
-
+        int rows;
         openWritableDatabase();
-        ContentValues values = toValuesWithoutId(t);
-        int rows = database.update(tableName, values,
-                columnId + " = ?", new String[]{id});
-        closeDatabase();
+
+        try {
+            ContentValues values = toValuesWithoutId(t);
+            rows = database.update(tableName, values,
+                    columnId + " = ?", new String[]{id});
+        } catch (SQLException e) {
+            Log.e(TAG, "Fail to update item", e);
+            throw e;
+        } finally {
+            closeDatabase();
+        }
         return rows;
 
     }
 
     public boolean deleteItem(T t) {
-        Log.i(TAG, "enter method");
         String id = t.getId();
         openWritableDatabase();
-        int rows = database.delete(tableName,
-                columnId + " = ?", new String[]{id});
-        closeDatabase();
+
+        int rows;
+        try {
+            rows = database.delete(tableName,
+                    columnId + " = ?", new String[]{id});
+        } catch (SQLException e) {
+            Log.e(TAG, "Fail to delete item", e);
+            throw e;
+        } finally {
+            closeDatabase();
+        }
         return rows > 0 ? true : false;
     }
 
     // remember to set modifiedTime before use this method
     public boolean labelItemDeletedWithModifiedTime(T t) {
-        Log.i(TAG, "enter method");
         String id = t.getId();
-
         openWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(columnDeleted, 1);
-        values.put(columnModifiedTime, t.getModifiedTime());
 
-        int rows = database.update(tableName, values,
-                columnId + " = ?", new String[]{id});
+        int rows;
+        try {
+            ContentValues values = new ContentValues();
+            values.put(columnDeleted, 1);
+            values.put(columnModifiedTime, t.getModifiedTime());
 
-        closeDatabase();
+            rows = database.update(tableName, values,
+                    columnId + " = ?", new String[]{id});
+        } catch (SQLException e) {
+            Log.e(TAG, "Fail to label item deleted", e);
+            throw e;
+        } finally {
+            closeDatabase();
+        }
         return rows > 0 ? true : false;
     }
 
     public int changeItemId(String oldId, String newId) {
-        Log.i(TAG, "enter method");
         openWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(columnId, newId);
-        int rows = database.update(tableName, values,
-                columnId + " = ?", new String[]{oldId});
-        closeDatabase();
+        int rows;
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(columnId, newId);
+            rows = database.update(tableName, values,
+                    columnId + " = ?", new String[]{oldId});
+        } catch (SQLException e) {
+            Log.e(TAG, "Fail to change item id", e);
+            throw e;
+        } finally {
+            closeDatabase();
+        }
         return rows;
     }
 
@@ -173,28 +213,46 @@ public abstract class BaseDataSource<T extends BaseData> {
             selectionArgs[selectionArgs.length - 1] = Integer.toString(deleted.getFlag());
         }
         openReadableDatabase();
-        Cursor cursor = database.query(true, tableName, allColumns, selection, selectionArgs, null, null, null, null);
+        Cursor cursor = null;
+        try {
+            cursor = database.query(true, tableName, allColumns, selection, selectionArgs, null, null, null, null);
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            T item = cursorToItem(cursor);
-            list.add(item);
-            cursor.moveToNext();
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                T item = cursorToItem(cursor);
+                list.add(item);
+                cursor.moveToNext();
+            }
+        } catch (SQLException e) {
+            Log.e(TAG, "Fail to retrieve item list", e);
+            throw e;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            closeDatabase();
         }
-        // Make sure to close the cursor
-        cursor.close();
-        closeDatabase();
         return list;
     }
 
     protected boolean dataIdExist(String id) {
         openReadableDatabase();
-        Cursor cursor = database.query(tableName,
-                new String[]{columnId}, columnId + " = ? ",
-                new String[]{id}, null, null, null);
-        boolean exist = cursor.getCount() > 0 ? true : false;
-        cursor.close();
-        closeDatabase();
+        Cursor cursor = null;
+        boolean exist;
+        try {
+            cursor = database.query(tableName,
+                    new String[]{columnId}, columnId + " = ? ",
+                    new String[]{id}, null, null, null);
+            exist = cursor.getCount() > 0 ? true : false;
+        } catch (SQLException e) {
+            Log.e(TAG, "Fail to know whether data exist", e);
+            throw e;
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            closeDatabase();
+        }
         return exist;
     }
 

@@ -216,7 +216,21 @@ public class EditLinkActivity extends BaseActivity {
 
     private void addLink(String title, String address) {
         linkId = UUID.randomUUID().toString();
-        updateLink(title, address);
+        Link newLink = new Link();
+        newLink.setId(linkId);
+        newLink.setUserId(userId);
+        newLink.setLinkType(linkType);
+//        if (name.length() > MAX_LENGTH) {
+//            name = name.substring(0, MAX_LENGTH);
+//            ToastHelper.showToastInternal(this,
+//                    "Name is truncated to 140 characters.");
+//        }
+        newLink.setTitle(title);
+        newLink.setAddress(address);
+
+        newLink.setModifiedTime(Calendar.getInstance().getTimeInMillis());
+        linkDataSource.insertItemWithId(newLink);
+        link = newLink;
     }
 
     private void updateLink(String title, String address) {

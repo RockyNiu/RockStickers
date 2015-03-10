@@ -8,3 +8,8 @@ Unfortunately, there is no app meet her simple requirement, as you know, too com
 I spend around three hours, and made the v1.0.0 to just show one most important link for her, the app has SQL database supporting and dismiss function. 
 
 More time will be spend to make both lists and items editable.
+
+Update:
+Items is editable now.
+Receive link shared from other app.
+Improve the Exception catching and Tracking.

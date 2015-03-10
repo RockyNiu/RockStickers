@@ -33,8 +33,9 @@
                 android:gravity="top|left"
                 android:hint="@string/address_default"
                 android:inputType="textUri|textMultiLine|textAutoComplete|textAutoCorrect"
-                android:lines="8"
-                android:maxLines="10"/>
+                android:lines="4"
+                android:maxLines="8"
+                android:minLines="2" />
         </LinearLayout>
 
         <LinearLayout
