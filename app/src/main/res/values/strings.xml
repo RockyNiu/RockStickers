@@ -8,12 +8,14 @@
     <string name="address_is_empty">Address is empty</string>
     <string name="app_name">Stickers</string>
     <string name="cancel">Cancel</string>
+    <string name="cancel_editing">Cancel Editing.</string>
     <string name="edit_link">Edit Link</string>
     <string name="email_title">Share address with you</string>
     <string name="error">Error</string>
     <string name="error_format">[Error] %s</string>
+    <string name="fail_to_save_link">Fail to Save Link.</string>
+    <string name="link_does_not_exist">Link dose not exist.</string>
     <string name="link_updated">Link is updated</string>
-    <string name="link_updated_cancelled">Update is Cancelled</string>
     <string name="news">News</string>
     <string name="please_fill_title">Please fill title.</string>
     <string name="save">Save</string>

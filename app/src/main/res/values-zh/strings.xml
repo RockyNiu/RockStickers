@@ -8,12 +8,14 @@
     <string name="add_link">添加链接</string>
     <string name="app_name">牛人便签</string>
     <string name="cancel">取消</string>
+    <string name="cancel_editing">取消编辑</string>
     <string name="edit_link">编辑链接</string>
     <string name="email_title">与您共享链接</string>
     <string name="error">错误</string>
     <string name="error_format">[错误] %s</string>
+    <string name="fail_to_save_link">保存链接失败。</string>
+    <string name="link_does_not_exist">链接不存在。</string>
     <string name="link_updated">链接已被更新</string>
-    <string name="link_updated_cancelled">链接更新被取消</string>
     <string name="news">新闻</string>
     <string name="please_fill_title">请填入标题。</string>
     <string name="save">保存</string>

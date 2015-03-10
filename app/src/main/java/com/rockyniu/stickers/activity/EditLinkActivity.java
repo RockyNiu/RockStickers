@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +24,7 @@ import java.util.regex.Pattern;
 
 public class EditLinkActivity extends BaseActivity {
 
-    private final static int UPDATE_DONE = -1000;
+    private final String TAG = "EditLinkActivity";
 //    private final int MAX_LENGTH = 140; // max length of name
 
     private LinkDataSource linkDataSource;
@@ -50,8 +51,10 @@ public class EditLinkActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (saveItem()) {
-                    EditLinkActivity.this.setResult(RESULT_OK);
-                    EditLinkActivity.this.finish();
+                    setResult(RESULT_OK);
+                    finish();
+                } else {
+                    //TODO
                 }
             }
         });
@@ -59,9 +62,7 @@ public class EditLinkActivity extends BaseActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ToastHelper.showToastInternal(EditLinkActivity.this, "Cancel Editing.");
-                EditLinkActivity.this.setResult(RESULT_CANCELED);
-                EditLinkActivity.this.finish();
+                cancelEditing();
             }
         });
         userId = ""; //TODO
@@ -78,22 +79,7 @@ public class EditLinkActivity extends BaseActivity {
         } else if (bundle != null) {
             if (bundle.keySet().contains(Intent.EXTRA_TEXT)) { // for HuaWei cell phone
                 String content = bundle.getString(Intent.EXTRA_TEXT);
-                String uri = "";
-                Pattern pattern = Pattern.compile(
-                        "\\b(((ht|f)tp(s?)\\:\\/\\/|~\\/|\\/)|www.)" +
-                                "(\\w+:\\w+@)?(([-\\w]+\\.)+(com|org|net|gov" +
-                                "|mil|biz|info|mobi|name|aero|jobs|museum" +
-                                "|travel|[a-z]{2}))(:[\\d]{1,5})?" +
-                                "(((\\/([-\\w~!$+|.,=]|%[a-f\\d]{2})+)+|\\/)+|\\?|#)?" +
-                                "((\\?([-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?" +
-                                "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)" +
-                                "(&(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?" +
-                                "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)*)*" +
-                                "(#([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)?\\b");
-                Matcher matcher = pattern.matcher(content);
-                if (matcher.find()) {
-                    uri = matcher.group();
-                }
+                String uri = grabUri(content);
                 addressEditText.setText(uri);
             } else {
                 userId = bundle.getString("com.rockyniu.stickers.userId");
@@ -111,9 +97,9 @@ public class EditLinkActivity extends BaseActivity {
             this.setTitle(R.string.edit_link);
             link = linkDataSource.getItemById(linkId);
             if (link == null) {
-                ToastHelper.showErrorToast(this, "Link does not exits.");
+                ToastHelper.showErrorToast(this, getResources().getString(R.string.link_does_not_exist));
+                setResult(RESULT_CANCELED);
                 finish();
-                this.setResult(RESULT_CANCELED);
                 return;
             }
             titleEditText.setText(link.getTitle());
@@ -138,8 +124,8 @@ public class EditLinkActivity extends BaseActivity {
                     smsIntent.setType("vnd.android-dir/mms-sms");
                     startActivity(smsIntent);
                 } else {
-                    ToastHelper.showToastInternal(EditLinkActivity.this,
-                            "Error happened when saving task.");
+                    ToastHelper.showErrorToast(EditLinkActivity.this,
+                            getResources().getString(R.string.fail_to_save_link));
                 }
                 return true;
             case R.id.menu_sendEmail:
@@ -153,8 +139,8 @@ public class EditLinkActivity extends BaseActivity {
                     emailIntent.setType("text/plain");
                     startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.send_email)));
                 } else {
-                    ToastHelper.showToastInternal(this,
-                            "Error happened when saving task.");
+                    ToastHelper.showErrorToast(EditLinkActivity.this,
+                            getResources().getString(R.string.fail_to_save_link));
                 }
                 return true;
             case android.R.id.home:
@@ -166,10 +152,34 @@ public class EditLinkActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        ToastHelper.showToastInternal(EditLinkActivity.this, "Cancel Editing.");
-        this.setResult(RESULT_CANCELED);
-        this.finish();
+        cancelEditing();
         super.onBackPressed();
+    }
+
+    private String grabUri(String content) {
+        String uri = "";
+        Pattern pattern = Pattern.compile(
+                "\\b(((ht|f)tp(s?)\\:\\/\\/|~\\/|\\/)|www.)" +
+                        "(\\w+:\\w+@)?(([-\\w]+\\.)+(com|org|net|gov" +
+                        "|mil|biz|info|mobi|name|aero|jobs|museum" +
+                        "|travel|[a-z]{2}))(:[\\d]{1,5})?" +
+                        "(((\\/([-\\w~!$+|.,=]|%[a-f\\d]{2})+)+|\\/)+|\\?|#)?" +
+                        "((\\?([-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?" +
+                        "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)" +
+                        "(&(?:[-\\w~!$+|.,*:]|%[a-f\\d{2}])+=?" +
+                        "([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)*)*" +
+                        "(#([-\\w~!$+|.,*:=]|%[a-f\\d]{2})*)?\\b");
+        Matcher matcher = pattern.matcher(content);
+        if (matcher.find()) {
+            uri = matcher.group();
+        }
+        return uri;
+    }
+
+    private void cancelEditing() {
+        ToastHelper.showToastInternal(EditLinkActivity.this, getResources().getString(R.string.cancel_editing));
+        setResult(RESULT_CANCELED);
+        finish();
     }
 
     private boolean saveItem() {
@@ -186,46 +196,30 @@ public class EditLinkActivity extends BaseActivity {
             DialogHelper.showNeedClickDialog(EditLinkActivity.this, getResources().getString(R.string.address_is_empty), getResources().getString(R.string.please_fill_title));
             return false;
         }
-        int updateResult;
-        if (linkId.equals("")) {
-            // Add item
-            updateResult = addItem(title, address);
-        } else {
-            // Update item
-            updateResult = updateItem(title, address);
-        }
-        if (updateResult == UPDATE_DONE) {
+        try {
+            if (linkId.equals("")) {
+                // Add item
+                addLink(title, address);
+            } else {
+                // Update item
+                updateLink(title, address);
+            }
             ToastHelper.showToastInternal(EditLinkActivity.this, getResources().getString(R.string.link_updated));
-        } else if (updateResult == RESULT_CANCELED) {
-            ToastHelper.showToastInternal(EditLinkActivity.this, getResources().getString(R.string.link_updated_cancelled));
-        } else {
-            //TODO
+        } catch (Exception e) {
+            String errorMessage = getResources().getString(R.string.fail_to_save_link);
+            Log.e(TAG, errorMessage, e);
+            ToastHelper.showErrorToast(EditLinkActivity.this, errorMessage);
+            return false;
         }
         return true;
     }
 
-    private int addItem(String title, String address) {
-        // create item and save into database
+    private void addLink(String title, String address) {
         linkId = UUID.randomUUID().toString();
-        Link newLink = new Link();
-        newLink.setId(linkId);
-        newLink.setUserId(userId);
-        newLink.setLinkType(linkType);
-//        if (name.length() > MAX_LENGTH) {
-//            name = name.substring(0, MAX_LENGTH);
-//            ToastHelper.showToastInternal(this,
-//                    "Name is truncated to 140 characters.");
-//        }
-        newLink.setTitle(title);
-        newLink.setAddress(address);
-
-        newLink.setModifiedTime(Calendar.getInstance().getTimeInMillis());
-        linkDataSource.insertItemWithId(newLink);
-        this.link = newLink;
-        return UPDATE_DONE;
+        updateLink(title, address);
     }
 
-    private int updateItem(String title, String address) {
+    private void updateLink(String title, String address) {
         Link newLink = new Link();
         newLink.setId(linkId);
         newLink.setUserId(userId);
@@ -240,7 +234,6 @@ public class EditLinkActivity extends BaseActivity {
 
         newLink.setModifiedTime(Calendar.getInstance().getTimeInMillis());
         linkDataSource.updateItem(newLink);
-        this.link = newLink;
-        return UPDATE_DONE;
+        link = newLink;
     }
 }

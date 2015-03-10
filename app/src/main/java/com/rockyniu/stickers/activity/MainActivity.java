@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -101,6 +102,7 @@ public class MainActivity extends BaseActivity implements OnFragmentInteractionL
     }
 
     private void goToUrl(String url) {
+        Log.i(TAG, "got to link: " + url);
         Uri uriUrl = Uri.parse(url);
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, uriUrl);
         startActivity(launchBrowser);

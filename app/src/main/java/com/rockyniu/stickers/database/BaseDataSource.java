@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.rockyniu.stickers.model.BaseData;
 
@@ -16,6 +17,9 @@ import java.util.List;
  * Created by Lei on 2015/2/16.
  */
 public abstract class BaseDataSource<T extends BaseData> {
+
+    private static final String TAG = "BaseDataSource";
+
     // Database fields
     public enum DeletedFlag {
         All(-1),
@@ -69,7 +73,6 @@ public abstract class BaseDataSource<T extends BaseData> {
     }
 
     public T getItemById(String id) {
-
         openWritableDatabase();
         Cursor cursor = database.query(tableName,
                 allColumns, columnId + " = ? ",
@@ -87,6 +90,7 @@ public abstract class BaseDataSource<T extends BaseData> {
     // remember to create an id for t:
     // t.setId(UUID.randomUUID().toString());
     public void insertItemWithId(T t) {
+        Log.i(TAG, "enter method");
         if (t == null || t.getId() == null || dataIdExist(t.getId())) {
             throw new IllegalArgumentException();
         }
@@ -98,6 +102,7 @@ public abstract class BaseDataSource<T extends BaseData> {
     }
 
     public int updateItem(T t) {
+        Log.i(TAG, "enter method");
         String id = t.getId();
 
         openWritableDatabase();
@@ -110,6 +115,7 @@ public abstract class BaseDataSource<T extends BaseData> {
     }
 
     public boolean deleteItem(T t) {
+        Log.i(TAG, "enter method");
         String id = t.getId();
         openWritableDatabase();
         int rows = database.delete(tableName,
@@ -120,6 +126,7 @@ public abstract class BaseDataSource<T extends BaseData> {
 
     // remember to set modifiedTime before use this method
     public boolean labelItemDeletedWithModifiedTime(T t) {
+        Log.i(TAG, "enter method");
         String id = t.getId();
 
         openWritableDatabase();
@@ -135,6 +142,7 @@ public abstract class BaseDataSource<T extends BaseData> {
     }
 
     public int changeItemId(String oldId, String newId) {
+        Log.i(TAG, "enter method");
         openWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(columnId, newId);
